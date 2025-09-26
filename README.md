@@ -1,72 +1,64 @@
-# Cyber Security Internship Task 4: Setup and Use a Firewall on Windows
+# Cyber Security Internship Task 4: Setup and Use a Firewall on Windows/Linux
 
 ## Introduction
-This repository documents my completion of Task 4 from the Elevate Labs Cyber Security Internship program. The objective was to configure and test basic firewall rules on Windows to allow or block network traffic, gaining hands-on experience with firewall management and traffic filtering.
+This repository documents my completion of Task 4 from the Elevate Labs Cyber Security Internship program. The objective was to configure and test basic firewall rules to allow or block traffic, using Windows Firewall on Windows 11. This exercise provided practical experience in network traffic filtering, port management, and security rule application.
 
-Key learnings: Firewalls act as barriers to control incoming and outgoing traffic based on rules, helping prevent unauthorized access. I used Windows Firewall via PowerShell on Windows 11, focusing on blocking insecure ports like Telnet (23) and allowing secure ones like SSH (22), even though SSH is more common on Linux—this demonstrates rule creation flexibility.
+Key learnings: Firewalls filter traffic based on rules for ports, protocols, and directions (inbound/outbound). Blocking insecure ports like Telnet (23) prevents risks from plain-text protocols, while allowing secure ones like SSH (22) enables safe remote access. I used PowerShell for precise command-line control, as it's more scriptable than the GUI.
 
 ## Tools Used
-- **Windows Firewall**: Built-in firewall tool accessed via PowerShell (no additional installations needed).
+- **Windows Firewall**: Native tool on Windows, configured via PowerShell.
 - **Operating System**: Windows 11.
-- **PowerShell**: Run as Administrator for configuring rules.
-- No paid tools or external software required.
+- **PowerShell**: Run as Administrator for rule management.
+- No additional paid tools or installations required.
 
 ## Steps Followed
-I followed the task's Hints/Mini Guide step-by-step, using PowerShell commands for Windows:
+I followed the task's Hints/Mini Guide step-by-step:
 
-1. **Open Firewall Configuration Tool**: Launched PowerShell as Administrator.
-   - Screenshot: [Firewall Configuration Overview] (Showing initial Get-NetFirewallRule output).
+1. **Open Firewall Configuration Tool**: Launched PowerShell as Administrator to access Windows Firewall commands.
+   
+2. **List Current Firewall Rules**: Used `Get-NetFirewallRule` to display existing rules.
+   - Screenshot: verify-rules-screenshot.png (Showing output of `Get-NetFirewallRule | Select DisplayName, Enabled, Direction, Action` with various system and custom rules).
 
-2. **List Current Firewall Rules**: Used `Get-NetFirewallRule` to view existing rules.
-   - Commands: See [firewall_commands windows.txt](firewall_commands_windows.txt).
-   - Results: See truncated output in [firewall_result_windows.txt](firewall_result_windows.txt), showing rules like "Cast to Device" and custom ones added later.
+3. **Add a Rule to Block Inbound Traffic on a Specific Port (e.g., 23 for Telnet)**: Created a rule to block port 23, as Telnet is insecure (transmits data in plain text).
+   - Screenshot: block-port-23-screenshot.png (PowerShell output for `New-NetFirewallRule` command).
 
-3. **Add a Rule to Block Inbound Traffic on a Specific Port (e.g., 23 for Telnet)**: Created a block rule for port 23 (Telnet, insecure due to plain-text transmission).
-   - Command: `New-NetFirewallRule -DisplayName "Block Telnet" -Direction Inbound -LocalPort 23 -Protocol TCP -Action Block`
-   - Screenshot: [Block Inbound on Port 23] (PowerShell output confirming rule creation).
+4. **Test the Rule by Attempting to Connect**: Since Telnet isn't enabled by default on Windows 11, I verified the rule's effect through status checks (e.g., via `Get-NetFirewallRule`). In a production test, I'd use `telnet localhost 23` or a remote probe to confirm blocking—no connection would establish.
 
-4. **Test the Rule**: Attempted a local Telnet connection using `telnet localhost 23` (or remotely if setup), but since Telnet isn't enabled by default on Windows 11, verified via rule status. In a real test, it would block connections.
-   - Note: For safety, tested in a controlled environment; no actual remote test shown as per local setup.
+5. **Add Rule to Allow SSH (Port 22)**: Added an inbound allow rule for port 22, simulating Linux-like SSH setup (useful if enabling OpenSSH on Windows).
+   - Screenshot: allow-ssh-screenshot.png (PowerShell output for `New-NetFirewallRule` command).
 
-5. **Add Rule to Allow SSH (Port 22)**: Even on Windows, added an allow rule for port 22 (SSH, for potential OpenSSH server use).
-   - Command: `New-NetFirewallRule -DisplayName "Allow SSH" -Direction Inbound -LocalPort 22 -Protocol TCP -Action Allow`
-   - Screenshot: [Allow SSH on Port 22] (PowerShell output confirming rule creation).
+6. **Remove the Test Block Rule**: Deleted the Telnet block rule to restore the original state.
+   - Screenshot: remove-rule-screenshot.png (PowerShell execution of `Remove-NetFirewallRule`).
 
-6. **Remove the Test Block Rule**: Restored original state by removing the Telnet block rule.
-   - Command: `Remove-NetFirewallRule -DisplayName "Block Telnet"`
-   - Screenshot: [Remove Test Rule] (PowerShell execution).
+7. **Document Commands or GUI Steps Used**: All via PowerShell (preferred over GUI for reproducibility). Full commands in [firewall_commands windows.txt](firewall_commands_windows.txt); execution results in [firewall_result windows.txt](firewall_result_windows.txt).
 
-7. **Document Commands or GUI Steps Used**: All steps via PowerShell (no GUI for precision). Full commands in [firewall_commands_windows.txt](firewall_commands_windows.txt); results in [firewall_result_windows.txt](firewall_result_windows.txt).
+8. **Summarize How Firewall Filters Traffic**: Windows Firewall evaluates packets against rules: matching criteria like port (e.g., 23), protocol (TCP), direction (inbound), and action (block/allow). It's stateful, remembering connection contexts to allow replies without explicit rules. This filters out malicious traffic while permitting legitimate ones.
 
-8. **Summarize How Firewall Filters Traffic**: Firewalls inspect packets based on rules (e.g., source/destination IP, port, protocol). Inbound rules control incoming traffic (e.g., block port 23 to prevent external Telnet exploits), while outbound rules manage outgoing (e.g., allow specific apps). Windows Firewall is stateful, tracking connections for dynamic responses.
-
-## Firewall Rules Summary
-- **Viewed Rules**: Used `Get-NetFirewallRule | Select DisplayName, Enabled, Direction, Action` to verify.
-  - Example Output (from [firewall_result_windows.txt](firewall_result_windows.txt)):
-    - Block Telnet: True, Inbound, Block
-    - Allow SSH: True, Inbound, Allow
-    - Other system rules (e.g., Steam, Google Chrome) shown for context.
-- **Custom Rules Added/Removed**: Successfully created, verified, and cleaned up to avoid persistent changes.
-- No issues encountered; rules parsed successfully (Status: OK).
+## Firewall Configuration Files and Outputs
+- **Commands Script**: [firewall_commands windows.txt](firewall_commands_windows.txt) – Contains all PowerShell commands used.
+- **Results Output**: [firewall_result windows.txt](firewall_result_windows.txt) – Detailed console output showing rule creations, verifications, and removals. Includes excerpts like:
+  - Custom rules: "Block Telnet" (Inbound, Block) and "Allow SSH" (Inbound, Allow).
+  - System rules for context (e.g., Media Center, Steam).
+- **Task Description**: [task 4-3.pdf](task_4-3.pdf) – The original PDF for reference.
 
 ## Answers to Interview Questions
 To demonstrate deeper understanding:
 
-1. **What is a firewall?** A security system that monitors and controls network traffic based on predetermined rules, acting as a barrier between trusted and untrusted networks.
+1. **What is a firewall?** A network security system that monitors and controls incoming/outgoing traffic based on security rules, acting as a barrier against threats.
 
-2. **Difference between stateful and stateless firewall?** Stateless firewalls filter packets independently without context; stateful ones track connection states for more intelligent decisions (e.g., allowing responses to initiated traffic).
+2. **Difference between stateful and stateless firewall?** Stateful firewalls track active connections and context (e.g., allowing return traffic); stateless ones evaluate packets individually without memory.
 
-3. **What are inbound and outbound rules?** Inbound rules govern incoming traffic to the device; outbound rules control traffic leaving the device.
+3. **What are inbound and outbound rules?** Inbound rules filter traffic entering the system; outbound rules filter traffic leaving it.
 
-4. **How does UFW simplify firewall management?** UFW (Uncomplicated Firewall) provides a user-friendly interface to iptables on Linux, allowing simple commands like `ufw allow 22` instead of complex syntax.
+4. **How does UFW simplify firewall management?** UFW provides a straightforward CLI for managing iptables on Linux, with simple commands like `ufw allow 22/tcp` instead of complex syntax.
 
-5. **Why block port 23 (Telnet)?** Telnet transmits data in plain text, making it vulnerable to eavesdropping and man-in-the-middle attacks; better to use secure alternatives like SSH.
+5. **Why block port 23 (Telnet)?** Telnet uses unencrypted communication, exposing credentials and data to interception; SSH (port 22) is a secure alternative.
 
-6. **What are common firewall mistakes?** Overly permissive rules (allowing all traffic), forgetting to test rules, ignoring outbound controls, or misconfiguring NAT/port forwarding.
+6. **What are common firewall mistakes?** Creating overly broad rules, forgetting to enable the firewall, misordering rules, or not testing after changes.
 
-7. **How does a firewall improve network security?** By blocking unauthorized access, preventing malware spread, and enforcing policies to filter malicious traffic.
+7. **How does a firewall improve network security?** By blocking unauthorized access, limiting exposure to vulnerabilities, and enforcing policies to mitigate attacks like port scanning.
 
-8. **What is NAT in firewalls?** Network Address Translation rewrites IP addresses in packets, hiding internal networks behind a single public IP for added security and IP conservation.
+8. **What is NAT in firewalls?** Network Address Translation maps private IP addresses to a public one, hiding internal network structure and conserving IPs.
 
 ## Conclusion
-This task provided basic firewall management skills, emphasizing the role of rules in traffic filtering. I focused on Windows PowerShell for precise control, blocking insecure Telnet and allowing SSH as a best practice. Future improvements: Integrate with GUI for visual verification or test with actual connections.
+This task built my skills in firewall configuration and traffic filtering, showing how rules protect against common risks. I successfully blocked an insecure port, allowed a secure one, and cleaned up, all documented with commands and screenshots. Future steps: Test with actual network tools like netcat for connection verification.
