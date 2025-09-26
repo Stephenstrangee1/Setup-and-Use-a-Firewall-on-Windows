@@ -1,0 +1,15 @@
+# Open PowerShell as Admin
+# 1. View firewall rules
+Get-NetFirewallRule
+
+# 2. Block inbound on port 23
+New-NetFirewallRule -DisplayName "Block Telnet" -Direction Inbound -LocalPort 23 -Protocol TCP -Action Block
+
+# 3. Allow SSH (port 22)
+New-NetFirewallRule -DisplayName "Allow SSH" -Direction Inbound -LocalPort 22 -Protocol TCP -Action Allow
+
+# 4. Verify rules
+Get-NetFirewallRule | Select DisplayName, Enabled, Direction, Action
+
+# 5. Remove test rule
+Remove-NetFirewallRule -DisplayName "Block Telnet"
