@@ -40,17 +40,5 @@ I followed the task's Hints/Mini Guide step-by-step:
   - Custom rules: "Block Telnet" (Inbound, Block) and "Allow SSH" (Inbound, Allow).
   - System rules for context (e.g., Media Center, Steam).
 
-## Answers to Interview Questions
-To demonstrate deeper understanding:
-
-1. **What is a firewall?** A network security system that monitors and controls incoming/outgoing traffic based on security rules, acting as a barrier against threats.
-2. **Difference between stateful and stateless firewall?** Stateful firewalls track active connections and context (e.g., allowing return traffic); stateless ones evaluate packets individually without memory.
-3. **What are inbound and outbound rules?** Inbound rules filter traffic entering the system; outbound rules filter traffic leaving it.
-4. **How does UFW simplify firewall management?** UFW provides a straightforward CLI for managing iptables on Linux, with simple commands like `ufw allow 22/tcp` instead of complex syntax.
-5. **Why block port 23 (Telnet)?** Telnet uses unencrypted communication, exposing credentials and data to interception; SSH (port 22) is a secure alternative.
-6. **What are common firewall mistakes?** Creating overly broad rules, forgetting to enable the firewall, misordering rules, or not testing after changes.
-7. **How does a firewall improve network security?** By blocking unauthorized access, limiting exposure to vulnerabilities, and enforcing policies to mitigate attacks like port scanning.
-8. **What is NAT in firewalls?** Network Address Translation maps private IP addresses to a public one, hiding internal network structure and conserving IPs.
-
 ## Conclusion
 This task built my skills in firewall configuration and traffic filtering, showing how rules protect against common risks. I successfully blocked an insecure port, allowed a secure one, and cleaned up, all documented with commands and screenshots. Future steps: Test with actual network tools like netcat for connection verification.
