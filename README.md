@@ -17,18 +17,18 @@ I followed the task's Hints/Mini Guide step-by-step:
 1. **Open Firewall Configuration Tool**: Launched PowerShell as Administrator to access Windows Firewall commands.
    
 2. **List Current Firewall Rules**: Used `Get-NetFirewallRule` to display existing rules.
-   - Screenshot: verify-rules-screenshot.png (Showing output of `Get-NetFirewallRule | Select DisplayName, Enabled, Direction, Action` with various system and custom rules).
+   - Screenshot: [verify-rules-screenshot.png](verify-rules-screenshot.png) (Showing output of `Get-NetFirewallRule | Select DisplayName, Enabled, Direction, Action` with various system and custom rules).
 
 3. **Add a Rule to Block Inbound Traffic on a Specific Port (e.g., 23 for Telnet)**: Created a rule to block port 23, as Telnet is insecure (transmits data in plain text).
-   - Screenshot: block-port-23-screenshot.png (PowerShell output for `New-NetFirewallRule` command).
+   - Screenshot: [block-port-23-screenshot.png](block-port-23-screenshot.png) (PowerShell output for `New-NetFirewallRule` command).
 
 4. **Test the Rule by Attempting to Connect**: Since Telnet isn't enabled by default on Windows 11, I verified the rule's effect through status checks (e.g., via `Get-NetFirewallRule`). In a production test, I'd use `telnet localhost 23` or a remote probe to confirm blocking—no connection would establish.
 
 5. **Add Rule to Allow SSH (Port 22)**: Added an inbound allow rule for port 22, simulating Linux-like SSH setup (useful if enabling OpenSSH on Windows).
-   - Screenshot: allow-ssh-screenshot.png (PowerShell output for `New-NetFirewallRule` command).
+   - Screenshot: [allow-ssh-screenshot.png](allow-ssh-screenshot.png) (PowerShell output for `New-NetFirewallRule` command).
 
 6. **Remove the Test Block Rule**: Deleted the Telnet block rule to restore the original state.
-   - Screenshot: remove-rule-screenshot.png (PowerShell execution of `Remove-NetFirewallRule`).
+   - Screenshot: [remove-rule-screenshot.png](remove-rule-screenshot.png) (PowerShell execution of `Remove-NetFirewallRule`).
 
 7. **Document Commands or GUI Steps Used**: All via PowerShell (preferred over GUI for reproducibility). Full commands in [firewall_commands windows.txt](firewall_commands_windows.txt); execution results in [firewall_result windows.txt](firewall_result_windows.txt).
 
@@ -39,25 +39,17 @@ I followed the task's Hints/Mini Guide step-by-step:
 - **Results Output**: [firewall_result windows.txt](firewall_result_windows.txt) – Detailed console output showing rule creations, verifications, and removals. Includes excerpts like:
   - Custom rules: "Block Telnet" (Inbound, Block) and "Allow SSH" (Inbound, Allow).
   - System rules for context (e.g., Media Center, Steam).
-- **Task Description**: [task 4-3.pdf](task_4-3.pdf) – The original PDF for reference.
 
 ## Answers to Interview Questions
 To demonstrate deeper understanding:
 
 1. **What is a firewall?** A network security system that monitors and controls incoming/outgoing traffic based on security rules, acting as a barrier against threats.
-
 2. **Difference between stateful and stateless firewall?** Stateful firewalls track active connections and context (e.g., allowing return traffic); stateless ones evaluate packets individually without memory.
-
 3. **What are inbound and outbound rules?** Inbound rules filter traffic entering the system; outbound rules filter traffic leaving it.
-
 4. **How does UFW simplify firewall management?** UFW provides a straightforward CLI for managing iptables on Linux, with simple commands like `ufw allow 22/tcp` instead of complex syntax.
-
 5. **Why block port 23 (Telnet)?** Telnet uses unencrypted communication, exposing credentials and data to interception; SSH (port 22) is a secure alternative.
-
 6. **What are common firewall mistakes?** Creating overly broad rules, forgetting to enable the firewall, misordering rules, or not testing after changes.
-
 7. **How does a firewall improve network security?** By blocking unauthorized access, limiting exposure to vulnerabilities, and enforcing policies to mitigate attacks like port scanning.
-
 8. **What is NAT in firewalls?** Network Address Translation maps private IP addresses to a public one, hiding internal network structure and conserving IPs.
 
 ## Conclusion
