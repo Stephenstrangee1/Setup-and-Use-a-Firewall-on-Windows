@@ -39,7 +39,6 @@ I followed the task's Hints/Mini Guide step-by-step:
 - **Results Output**: firewall_result windows.txt – Detailed console output showing rule creations, verifications, and removals. Includes excerpts like:
   - Custom rules: "Block Telnet" (Inbound, Block) and "Allow SSH" (Inbound, Allow).
   - System rules for context (e.g., Media Center, Steam).
-- **Task Description**: task 4-3.pdf – The original PDF for reference.
 
 ## Answers to Interview Questions
 To demonstrate deeper understanding:
