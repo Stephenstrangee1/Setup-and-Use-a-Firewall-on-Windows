@@ -17,28 +17,29 @@ I followed the task's Hints/Mini Guide step-by-step:
 1. **Open Firewall Configuration Tool**: Launched PowerShell as Administrator to access Windows Firewall commands.
    
 2. **List Current Firewall Rules**: Used `Get-NetFirewallRule` to display existing rules.
-   - Screenshot: [verify-rules-screenshot.png](verify-rules-screenshot.png) (Showing output of `Get-NetFirewallRule | Select DisplayName, Enabled, Direction, Action` with various system and custom rules).
+   - Screenshot: verify-rules-screenshot.png (Showing output of `Get-NetFirewallRule | Select DisplayName, Enabled, Direction, Action` with various system and custom rules).
 
 3. **Add a Rule to Block Inbound Traffic on a Specific Port (e.g., 23 for Telnet)**: Created a rule to block port 23, as Telnet is insecure (transmits data in plain text).
-   - Screenshot: [block-port-23-screenshot.png](block-port-23-screenshot.png) (PowerShell output for `New-NetFirewallRule` command).
+   - Screenshot: block-port-23-screenshot.png (PowerShell output for `New-NetFirewallRule` command).
 
 4. **Test the Rule by Attempting to Connect**: Since Telnet isn't enabled by default on Windows 11, I verified the rule's effect through status checks (e.g., via `Get-NetFirewallRule`). In a production test, I'd use `telnet localhost 23` or a remote probe to confirm blocking—no connection would establish.
 
 5. **Add Rule to Allow SSH (Port 22)**: Added an inbound allow rule for port 22, simulating Linux-like SSH setup (useful if enabling OpenSSH on Windows).
-   - Screenshot: [allow-ssh-screenshot.png](allow-ssh-screenshot.png) (PowerShell output for `New-NetFirewallRule` command).
+   - Screenshot: allow-ssh-screenshot.png (PowerShell output for `New-NetFirewallRule` command).
 
 6. **Remove the Test Block Rule**: Deleted the Telnet block rule to restore the original state.
-   - Screenshot: [remove-rule-screenshot.png](remove-rule-screenshot.png) (PowerShell execution of `Remove-NetFirewallRule`).
+   - Screenshot: remove-rule-screenshot.png (PowerShell execution of `Remove-NetFirewallRule`).
 
-7. **Document Commands or GUI Steps Used**: All via PowerShell (preferred over GUI for reproducibility). Full commands in [firewall_commands windows.txt](firewall_commands_windows.txt); execution results in [firewall_result windows.txt](firewall_result_windows.txt).
+7. **Document Commands or GUI Steps Used**: All via PowerShell (preferred over GUI for reproducibility). Full commands in firewall_commands windows.txt; execution results in firewall_result windows.txt.
 
 8. **Summarize How Firewall Filters Traffic**: Windows Firewall evaluates packets against rules: matching criteria like port (e.g., 23), protocol (TCP), direction (inbound), and action (block/allow). It's stateful, remembering connection contexts to allow replies without explicit rules. This filters out malicious traffic while permitting legitimate ones.
 
 ## Firewall Configuration Files and Outputs
-- **Commands Script**: [firewall_commands windows.txt](firewall_commands_windows.txt) – Contains all PowerShell commands used.
-- **Results Output**: [firewall_result windows.txt](firewall_result_windows.txt) – Detailed console output showing rule creations, verifications, and removals. Includes excerpts like:
+- **Commands Script**: firewall_commands windows.txt – Contains all PowerShell commands used.
+- **Results Output**: firewall_result windows.txt – Detailed console output showing rule creations, verifications, and removals. Includes excerpts like:
   - Custom rules: "Block Telnet" (Inbound, Block) and "Allow SSH" (Inbound, Allow).
   - System rules for context (e.g., Media Center, Steam).
+- **Task Description**: task 4-3.pdf – The original PDF for reference.
 
 ## Answers to Interview Questions
 To demonstrate deeper understanding:
